@@ -1,0 +1,41 @@
+*{
+  padding: 0;
+}
+svg{
+  background-color: #f0f0f0;
+  width: 98%;
+  float: left;
+}
+footer{
+  width: 100%;
+  height: 50px;
+  float: left;
+  margin-top: 50px;
+  padding-top: 50px;
+}
+
+.trophy{
+  width: 80%;
+  /* text-align: justify; */
+  float: left;
+  opacity: 0;
+  padding: 10%;
+  /* background-color: red; */
+}
+
+img{
+  width: 100%;
+}
+
+/* #trophy_12{
+  padding-top: 70%;
+} */
+#trophy_24{
+  padding-top: 150%;
+}
+#trophy_36{
+  padding-top: 100%;
+}
+#trophy_47{
+  padding-top: 100%;
+}

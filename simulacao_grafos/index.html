@@ -1,0 +1,282 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+</head>
+<body onload="init()">
+  <center>
+    <h1>
+      Evolução epidemiológica em redes de contatos sociais<br/>
+      <small>
+        utilizando Vector Graphics interativo para visualização
+      </small>
+    </h1>
+  </center>
+
+  <!-- painel onde ficam os relatórios -->
+  <article>
+    <h2>1. Introdução</h2>
+    <p>
+      O SVG (Scalable Vector Graphics) são um padrão universal, internacional de
+      descrição de elementos gráficos escaláveis. Isso significa que os objetos são
+      descritos por suas definições matemáticas, o que permite alta definição, e
+      mesmo, teoricamente, zoom infinito . Essas são propriedades desejaveis quando
+      lidamos com um mundo computacional gráfico. É possivel usar programas param
+      produzir um arquivo SVG, mas por seu código ser em formato XML, é possível
+      descrever figuras necessitando de apenas um editor de arquivos (Notepad++,
+      Atom, emacs, etc). Essa grande liberdade de alteração, e compatibilidade com
+      grande parte das plataformas gráficas populares torna o SVG um padrão relevante.
+    </p>
+    <p>
+      Quando necessitamos qualidade e resolução gráficas, é comum usar esse padrão para
+      definir os objetos: cortadoras e impressoras a lazer, por exemplo, muito comumente
+      implementam sistemas baseados em figuras vetoriais. Essa escalabilidade tambem é
+      útil em design, animação, e simulações, como veremos.
+    </p>
+    <p>
+      No quesito simulações, e visualização, o SVG permite desenvolvimento de modelos
+      extremamente confortáveis, de maneira fácil: a visualização de curvas, modelos
+      físicos ou matemáticos, por exemplo, são extremamente bem representados quando
+      desenvolvidos utilizando esse padrão. Aqui, mais uma vez, a descrição matemática
+      das propriedades de objetos e escalabilidade são pontos a favor da sua utilização.
+      Aqui, utilizamos SVG para visualização de grafos em um modelo de evolução de
+      epidemias simples, interativo.
+    </p>
+
+    <h2>1. Motivações</h2>
+    <p>
+      Além do estudo aprofundado do padrão, e possibilidades usando SVG com interatividade,
+      desejamos desenvolver um modelo de simulação aprofundado, utilizando teoria de redes
+      complexas no estudos da dispersão de doenças infecçiosas em grupos sociais (redes de
+      contatos sociais). Para isso, sugerimos um modelo biológico utilizando padrão de
+      evolução estocática, baseada em atualização. Portanto, essa é uma atividade
+      desenvolvida com o objetivo de obter o kernel para a visualização de um modelos
+      utilizando redes complexas.
+    </p>
+    </p>
+      A proposta é motivada por <a href="http://www.saudedoviajante.pr.gov.br/2019/10/81/Noticias-da-doenca-do-Virus-Ebola-na-Republica-Democratica-do-Congo.html">
+      recentes surtos da Ebola em países na África</a>, já em 2019, e no estudo desenvolvido
+      por <a href="http://conteudo.icmc.usp.br/pessoas/tiago/index.html/"> Tiago Pereira</a>,
+      sobre epidemiologia e combate a doenças com modelos de quarentena. De fato, o  combate
+      a doença tem sido feito em boa parte mantendo indivíduos isolados: questionamos
+      se tal prática faz sentido.
+    </p>
+
+    <h2>3. Método</h2>
+    Dividimos o processo em tres partes relevantes: geração e tratamento usando redes;
+    algoritmos para visualização; e SGV interativo. Esses dois últimos bem embasados em
+    especial por [2,3], e [6], respectivamente.
+
+    <h3>3.1. Fundamentação e Pesquisa</h3>
+    A teoria sobre grafos é embasada em aula, e livro [1], na referencias. Já os algoritmos
+    de visualização de grafos estão fortemente embasados por MCGUFFIN [6], e em parte, o design
+    inspirado em [5]. Finalmente, o SVG interativo tem grande influencia de [2,3]. Essas são
+    as bases mais precisas, caso o leitor tenha interesse.
+    <h3>3.2. Grafos por Anexação</h3>
+    <p>
+      Optamos por gerar grafos na inicialização, ao invés de gerar uma uma versão a ser
+      estudada exatamente para adapatar os algoritmos de visualização a lidar com diferentes
+      dados e diferentes estruturas. Nesse caso, optamos por um modelo classico de produção
+      de grafos: um modelo de anexação preferencial.
+    </p>
+    <p>
+      Grafos construidos dessa forma sabidamente modelam bem as redes sociais humanas.
+      Deve ser possivel notar que como processo tambem implicará na exisetencia de Hubs
+      na rede. A teoria por tras disso está disponivel em [1]. Esse grafo preserva
+      caracteristica de mudo pequeno, e tem distribuição dos graus por uma exponencial.
+    </p>
+
+    <h3>3.3. Algoritmos para Visualização</h3>
+    <p>
+      Existe um quantidade de algoritmos para visualização de grafos: implementamos alguns
+      dos mais simples; como indicado em [6]. Os algoritmos usados se resumem a 3, sobre
+      como desenvolvemos: os pre-definidos; baseados em força; e aleatórios.
+    </p>
+    <p>
+      Os <strong>algoritmos predefinidos</strong> já tem aparencia certa, e podem ser
+      entregues facilmente. Desse tipo, temos o layout arco, e o layout radial. Já os
+      algoritmos baseados em força direcionada, simulam essa interação física entre ele
+      e os outros Indivíduos pelas leis
+      \[F_{rep} = \frac{K_r}{d^3} (x_a-x_b) : \text{forças de repulsão entre dois nós}\]
+      \[F_{ela} = K_e (L - d) \frac{x_a-x_b}{d} : \text{baseada na Lei de Hooke}\]
+      Quando consideramos o somatório entre cada dois nós, e temos a força resultante,
+      podemos atualizar a posição do nó.
+    </p>
+    <p>
+      Ainda sobre as visuaizações predefinidas, interessa destacar que consoderamos
+      um algoritmo recursivo para alocação organizada dos nós: um ordenamento por
+      baricentro. O efeito dessa técnica é manter nós topolocicamente pŕoximos, tambem
+      geometricamente pŕoximos, o que diminui o número de intercessões de arestas, e
+      perite visualizar nós mais relevantes, pex.
+    </p>
+    <p>
+      Finalmente, vale citar alguns detalhes de implementação, correções, resoluções
+      foram necessários em trechos de código, e não serão aprofundados aqui. Mas como
+      exemplo: como definir os arcos (na visualização update_radial) para que estejam
+      corretamente orientados? Como diferenciar o arco que apontará para dentro, ou
+      para fora do centro da bola? Solução: dados os pontos $x_a$ e $x_b$ a serem ligados,
+      e a coordenada $c$ do centro, podemos fazer o produto vetorial:
+      \[(0,0,z) = (x_b-x_a) \times (c-x_a) : \text{o sinal de z define a orientação}\]
+      Em outras palavras, é difícil descrever o conjunto de soluções envolvidas em
+      um projeto de visualização desse tipo. 
+    </p>
+
+    <h2>4. Resultados e Visualização</h2>
+    O resultado do que foi proposto pode ser visto abaixo. Aproveitamos para citar as
+    principais funcionalidades do modelo. Em cada caso, descrevemos brevemente o modo
+    como desenvolvemos. Cada umas delas está em funcionamento; não apresentamos as
+    funcionalidades em etapa de desenvolvimento.
+    <h3>4.1. Opções de Visualização</h3>
+    <p>
+      Com base nos algoritmos citados, desenvolvemos 6 opções para visualização do
+      grafo; algumas baseadas em referencia, outras como alteração das originais:
+      <ul>
+        <li>
+          <strong>update_simple_random</strong> é o algoritomo básico em que os
+          nós são disposto de maneira aleatória sobre o espaço. Agradável quando
+          tratamos poucos nós em um grafo esparso.
+        </li>
+        <li>
+          <strong>update_horizontal_arc</strong> é descrito como a disposição em
+          que os nós estão em fila, e ligados por arcos de semicircunferencias.
+          Úteis para grafos com poucos nós. Em especial, conservam espaço e
+          áreas livres para texto ou anotações de títulos.
+        </li>
+        <li>
+          <strong>update_radial</strong> comuns quando tratamos de redes do tipo
+          mundo pequeno e redes sociais pequenas. Caracterizado como dispondo nós
+          sobre uma circunferencia, ligados por arcos (retas). Algumas propriedades
+          são desejáveis, como arcos curtos tangentes ao raio.
+        </li>
+        <li>
+          <strong>update_circle_random</strong> semelhante ao simple_random, esse
+          algoritmo dispõe os nós aleaoriamente no interior de uma bola.
+        </li>
+        <li>
+          <strong>update_random_force</strong>, ou mais conhecido como force
+          directed, é uma tecnica que trata os nós como objetos de mesma carga
+          que se repelem, e as aretas como molas de massa desprezível. Após uma
+          inicialização aleatória, atualizamos as posições por um modelo físico
+          de foças resultantes
+        </li>
+        <li>
+          <strong>update_radial_force</strong> semelhante ao anterior, mas os nós
+          são inicializados como em update_radial. Aqui obtemos um dos melhores
+          resultados na visualização.
+        </li>
+      </ul>
+      As opções estão listadas na caixa de seleção, no painel.
+    </p>
+    <h3>4.1. Atualização de Indivíduos</h3>
+    <p>
+      A cada ciclo em que ocorre uma chamada a função de atualização, iteramos sobre
+      os nós do modelo, e atualiamos seuestado; dados seus vizinhos, existe certa
+      probabilidade de o indivíduo ser contaminado. Além disso, se o indivíduo está
+      infectado, existe alguma chance de morte. Indivíduos falecidos não são considerados
+      como infectantes. Após atualização, o sistema se encarrega de atualizar a cor
+      do nó adoecido para vermelho (cinza).
+    </p>
+    <h3>4.2. Atualização de Parametros</h3>
+    <p>
+      Disponibilizamos, ainda, a possibilidade de alterar os parametros de atualização
+      do modelo, já ciatos: probabilidades de infecção, e morte, no ciclo, ou quantidade
+      de indivíduos na população. Há, ainda, a possibilid da reinicialização de  do
+      modelo. Essa reinicialização permite retornar os nós ao estado natural, a escolher
+      um novo infectado para reinicio.
+    </p>
+    <h3>4.3. Zoom-in e zoom-out, tootip, e arraste</h3>
+    Sobre interação, é possivel dar zomm-in indefinidamente (pressione "z" e clique
+    onde deseja aproximar), zomm-out (pressione "x" e clique com o mouse) ou retornar
+    ao estado inicial ("ctrl+z"). Além disso, é possivel arrastar os nós, ou obserar
+    os títulos do nós e das arestas pausando o mouse sobre esses.
+    <div>
+      <center>
+        <div id = "container">
+          <div id="panel">
+            <!--aqui vem todo o painel de simulacao-->
+            <svg id="svg"></svg>
+            <!--about zoomming-->
+            <strong id="zoom"></strong>
+          </div>
+          <div id="control">
+            <!--painel de selecao-->
+            <select class = "control" id="options" size="1" onchange="change_option()">
+              <option value="0">update_simple_random</option>
+              <option value="1">update_radial_force</option>
+              <option value="2">update_radial</option>
+              <option value="3">update_horizontal_arc</option>
+              <option value="4">update_circle_random</option>
+              <option value="5">update_random_force</option>
+            </select>
+            <br/><br/><br/><br/>
+            <!--hovers de niveis de inicialização-->
+            <strong id="d">Probabilidade de morte após a infecção ocorrer no ciclo. De 0% a 10%:</strong>
+            <input oninput="die_freq()" id="die_freq" class="control" type="range" min="0" max="100" value="0"/>
+            <br/>
+            <strong id="p">Probabilidade de ocorrer contaminação na visinhança. De 0% a 10%:</strong>
+            <input oninput="tra_freq()" id="tra_freq" class="control" type="range" min="0" max="100" value="0"/>
+            <br/>
+            <strong id="n">Quantidade de nós no grafo (de 0 a 100 nós): 250 nós</strong>
+            <input oninput="nodes_number()" id="nodes_number" class="control" type="range" min="0" max="100"/>
+            <br/><br/><br/>
+            <!--botao de inicialização-->
+            <strong>Reinicialização do modelo:</strong>
+            <svg id="init" onclick="init()">
+              <title>run/re-init</title>
+              <path d="M 40 10 L 70 30 L 40 50 Z" fill="gray"/>
+            </svg>
+
+          </div>
+        </div>
+      </center>
+    </div>
+
+    <h2>5. Propostas e Considerações</h2>
+    <p>
+      Obtivemos uma visualização rasoável com design agradável, e que lida bem com o problema
+      da interatividade: o painel de controle a direita, bem como o zoom são de simples
+      utilização. De fato, a proposta de obter um painel simples foi bem resolvida. Ao mesmo
+      tempo, limitamos o tamanho dos dados utilizados; alguns dos algoritmos apresentaram
+      erros numéricos graves, que devem ser estudados nas proximas etapas do projeto, para
+      um grafo denso, embora não tenham ocorrido para grafos maiores: 5 mil ou 10 mil nós.
+      Esse erro se dá quando a intensidade das forças de interação se tornam intensas, a
+      ponto de cálculos resultarem valores incorretos, ou não executarem.
+    </p>
+    <p>
+      Além disso, vale armazenar os dados em extruturas mais eficientes: obtivemos lentidão
+      com os algoritmos baseados força a partir de 1000 nós. Esse fato é explicado pelo
+      algoritmo de interação entre os nós, feito em O(n**2), o que é custoso quando a demanda
+      é alta. Ainda assim, acreditamos ser possível trabalhar com até 10 mil nós durante
+      as próximas etapas, utilizando redes sociais mais densas.
+    </p>
+    <p>
+      Finalmente, obtivemos resultados iniciais promissores no que se refere a própria
+      simulação de epidemia. O modelo se comporta bem, e permitirá facil aspecialização
+      quando lidarmos com classes de objetos mais realistas. Desejamos gerar redes
+      mais próximas da realidade nesse processo.
+    </p>
+
+    <h2>6. Referencias</h2>
+    <p>[1] BARABÁSI, Albert-Lázló. Netwok Science. [S. l.: s. n.], 2019. Disponível em: http://networksciencebook.com/. Acesso em: 6 nov. 2019.</p>
+    <p>[2] COLLINGRIDGE, Peter. Interactive SVGs. [S. l.], 2010. Disponível em: http://www.petercollingridge.co.uk/tutorials/svg/. Acesso em: 5 nov. 2019.</p>
+    <p>[3] COLLINGRIDGE, Peter. SVG Tutorials. [S. l.], 2012. Disponível em: http://www.petercollingridge.co.uk/tutorials/svg/. Acesso em: 5 nov. 2019.</p>
+    <p>[4] COPES, Flavio. An in-depth SVG tutoria. [S. l.], 6 abr. 2018. Disponível em: https://flaviocopes.com/svg/#the-advantages-of-svg. Acesso em: 5 nov. 2019.</p>
+    <p>[5] GOVE, Robert. 6 Ways Visualize Graphs. [S. l.], 2017. Disponível em: https://www.twosixlabs.com/6-ways-visualize-graphs/. Acesso em: 5 nov. 2019.</p>
+    <p>[6] MCGUFFIN, Michael. Simple Algorithms for Network Visualization: A Tutorial. TSINGHUA SCIENCE AND TECHNOLOGY, [S. l.], v. 17, n. 4, p. 383-398, 1 ago. 2012.</p>
+    <p>[7] MOTA, Alexandre de Assis; MOTA, Lia Toledo Moreira; FRANÇA, André Luiz Morelato. METODOLOGIA ORIENTADA A OBJETOS PARA VISUALIZAÇÃO RÁPIDA DE GRAFOS NÃO-DIRIGIDOS A PARTIR DA LISTA DE ARESTAS. O Impacto da Pesquisa Operacional nas Novas Tendencias Multidisciplinares , XXXVI-SBPO, p. 2257-2267, 26 nov. 2004.</p>
+    <p>[8] MOZILLA. Recursos de desenvolvedores para desenvolvedores. [S. l.], 2019. Disponível em: https://developer.mozilla.org/pt-BR/. Acesso em: 5 nov. 2019.</p>
+    <p>[9] SVGBASICS. [S. l.], 2004. Disponível em: http://www.svgbasics.com/. Acesso em: 5 nov. 2019.</p>
+    <p>[10] THE ARTIFICIAL. SVG Animation Tutorial. [S. l.], 2018. Disponível em: https://theartificial.com/blog/2018/05/23/svg-animation.html. Acesso em: 5 nov. 2019.</p>
+  </article>
+
+  <footer><center><strong>copyright © fredsonerd@2019</strong></center></footer>
+  <script type="text/javascript" src = "node.js"></script>
+  <script type="text/javascript" src = "graph.js"></script>
+  <script type="text/javascript" src = "visualization.js"></script>
+  <script type="text/javascript" src = "interact.js"></script>
+  <script type="text/javascript" src = "draw.js"></script>
+  <script type="text/javascript" src = "update.js"></script>
+</body>
+<html>

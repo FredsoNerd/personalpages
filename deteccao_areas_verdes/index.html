@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!-- INSIRA AS PROPRIEDADES E TAL -->
+	</head>
+	<body>
+		<h1>Detecção de Áreas Verdes Em Cidades Usando Imagens de Satélite<br/>
+		<small>Vizualizacao do Processo de Detecção</small></h1>
+		
+		<h2>1. Introdução</h2>
+		<p>
+		Hoje em dia, dados são gerados em escala absurda: estamos na chamada época do <strong>Big Data</strong>.
+		De fato, um ploblema que surge nesse contexto é a necessidade de pocessar esses dados extraindo informação relevante, seja para uma necessidade especifica, ou pesquisa ampla. 
+		</p>
+		<p>
+		Aqui, desejamos desenvolver uma proposta simples de processamento gráfico na <strong>detecção (destacamento) de áreas verdes em cidades usando imagens de satélite</strong>, sob a demanda de modelos computacionais para dispersão de insetos, ou animais, por exemplo, para os quais uma dinâmica mais realista exige essa distinção: em nosso caso, direcionados por um projeto de dispersão de mosquitos Aedes Aegipty portadores do víruz Wolbachia dentro de uma população ampla.
+		</p>
+		<p>
+		A proposta se baseia na dissertação de mestrado de <strong>Dyego Oliveira Almeida</strong>, 2018, entitulada <strong>Métodos de Visão Computacional Aplicados a Extração de Características de Ambientes Urbanos em Imagens de Satélite de Baixa Resolução</strong>. Para tal, utilizamos da linguagem <strong>Python</strong>, como plataforma, junto a biblioteca gráfica <strong>OpenCV</strong> para manipulação de imagens.
+		</p>
+		
+		<h2>2. Justificativa</h2>
+		<p>
+		Como dito, esse trabalho serve de ferramental na extração de informação relevante para outros projetos que exigem reconhecimento de características geográficas, urbanas, em especial. Além disso, propostas do gênero estão no cerne do que hoje é conhecido como <strong>Visão Computacional</strong>. Tal área vem se desenvolvendo bastante, seja na manipulação de fotos por aplicativos, ou estudos topológicos e geográficos relevantes. Algumas propostas atuais fazem uso de imagens para detecção de incendios florestais ou índices de desmatamento ao longo de certo período.
+		</p>
+		<p>
+		Em específico, a atividade desenvolvida visa gerar um mapeamento sobre as áreas urbanas e florestadas em algumas cidades para uso em um modelo de simulação na dispersão de indivíduos da espécie Aédes Aegipty infectados com víruz Wolbachia, que impede a transmissão de uma série de doenças pela picada do inseto. O chamado <strong><a href = "https://portal.fiocruz.br/noticia/aedes-aegypti-metodo-wolbachia-para-o-combate-ao-mosquito-chega-em-sua-etapa-final">Método Wolbachia</a></strong> vem sendo implementado pela Fiocruz, e já se encontra em fase de testes em 2019. Sabe-se que tais animais são adapatados às zonas urbanas; portanto, uma simulação individual se valeria de tal mapeamento, garantindo maior meroshimilhança ao modelo. Tal proposta está sendo desenvolvida em paralelo, orientado pelo professor Claudio José Struchiner.
+		</p>
+		
+		
+		<h2>3. Método</h2>
+		<p>
+		Seguimos uma metodologia na sequência: <a href="#3.1.">fundamentação e pesquisa</a>; <a href = "#3.2.">obtenção dos dados (imagens)</a>; <a href = "#3.3.">aplicação das técnicas</a>; e <a href = "#3.4.">apresentação dos resultados<a>. Abaixo, discutimos brevemente cada um dos tópicos abordados, com ênfase no tópico <strong>3.3. aplicação das técnicas</strong>.
+		</p>
+		<h3 id = "3.1.">3.1. Fundamentação e Pesquisa</h3>
+		<p>
+		Usamos como princial referência a <a href = "https://repositorio.bc.ufg.br/tede/bitstream/tede/9036/5/Disserta%C3%A7%C3%A3o%20-%20Dyego%20Oliveira%20Almeida%20-%202018.pdf"> dissertação</a> de <strong>Dyego Oliveira Almeida: Métodos de Visão Computacional Aplicados a Extração de Características de Ambientes Urbanos em Imagens de Satélite de Baixa Resolução</strong>, detecção de características como prédios e áreas verdes. Em seu trabalho, Dyego faz uso de uma série de tecnicas de computação gráfica, afim de gerar uma máscara de áreas verdes e construidas em imagens de satélites.x-fast
+		</p>
+		<p>
+		Além da dissertação, usamos demais referencias complementares, seja para compreensão das técnicas apresentadas por Dyego, seja como complemento às proprias técnicas. Para tal, tomamos refencias sobre <strong>Conversão e Manipulacao em Espaços de Cor</strong>, utlização de filtrol como <strong>Filtros Gaussiano Laplaciano e Gabor</strong> e <strong>Filtragem de imagens fixas</strong>, necessitamos, ainda, como referencia, do uso de <strong>Introdução a Visão Computacional com Python e OpenCV</strong> e tecnicas de <strong>Processamento de Imagens- Pré Processamento</strong>. Para cada um desses tópicos, apresentamos uma refencia ao fim da página.
+		</p>
+		<p>
+		Finalmente, destaco as aulas da professora <strong><a href = "https://emap.fgv.br/corpo-docente/asla-medeiros-sa">Asla Medeiros e Sá</a></strong>, sua orientação e sugestões sobre o uso da plataforma web, ténicas com javascript e html, fundamentais no desenvolvimento desse trabalho final.
+		</p>
+		<h3 id = "3.2.">3.2. Obtenção dos Dados (imagens)</h3>
+		<p>
+		Inicialmente, desejamos acessar dados de imagens de satélites do <strong>INPE - RJ</strong>, mas a demora sobre contato se extendeu, impossibilitnto essa abordagem. Dessa forma, obtivemos dados manualmente, com ajuda da plataforma <a href="https://www.google.com.br/earth/">Google Earth</a>. Fizemos a busca manual por cidades que apresentassem áreas de vegetação destacadas, e de comprimento relevante.
+		</p>
+		<p>
+		Importante destacar a existencia de uma API pra uso da Google Earth Engine através do Python. O uso dessa API exige autenticação privilegiada para desenvolvedores registrados: exigencia da criação de um registro contendo Nome, Email e Instituição de Afiliação. Dito isso, a plataforma oference acesso a Petabytes de imagens de satélites e dados geoespaciais. Finalmente, obtivemos imagens normalizadas com resolução de 600px por 1000px, 8bits; fotos retiradas no range de 3000m a 4000m de altitude. Escolhemmos uma série de 13 cidades do Brasil para primeira avaliação: essas imagens são apresentadas nos resultados, logo mais.
+		</p>
+		
+		<h3 id = "3.3.">3.3. Aplicação das Técnicas</h3>
+		<p>
+		Aplicamos cinco técnicas encadeadas, afim de produzir as máscaras desejadas. Cada técnica visa atingir um objetivo específico, que será exlicado com maior detalhe. Parte das técnicas utilizadas reproduzem a proposta de Dyego, e introduzimos uma quarta, visando maior clareza na identificação das zonas verdes. Nessa etapa, utilizamos de Python junto a biblioteca OpenCV para processamento de imagens.
+		</p>
+		<ol>
+			<li><strong>Gaussian Blur</strong> é uma técnica de suavização que tem por função substituir o vetor do pixel pelo valor por uma máscara de convolução em seus vizinhos. Isso tem efeito de suavização, e eliminação de alguns ruídos, mantendo bordas, que é extremamente ítul, principalmente, quando trabalhamos com imagens pouco homogêneas, e desejamos uma classificação menos específica, mas voltada a visinhaças em macro.</li>
+			<li><strong>Expandimos o Espaço de Cores</strong> antes restrito apenas ao interior do RGB:255x255x255, para aumentar o contraste entre regiões eventualmente próximas, e facilitar a identificação dos espectros específicos. Tem, portanto, um efeito de aclarar as distinçõs entre as cores. Isso será extremamente útil, quando aplicamos a próxima técnica de destacamento de cores.</li>
+			<li><strong>A Decorrelação Por Alongamento</strong> permite destacar informações de cor distintas, diminuindo a dependencia entre partes da foto, e garantindo os espectros mais bem distribuidos no espaço de cor, enquanto preserva a informação original; o que permite observação de infomações não diretamente visíveis inicialmente. Tal técnica foi aplicada por Dyego, sob o mesmo objetivo: para tal, fizemos alterações importantes em uma <a href = "https://github.com/lbrabec/decorrstretch">biblioteca</a> Python, simples o bastante para os nossos propósitos.</li>
+			<li><strong>Avaliamos o Espaço de Crominancia</strong> da imagem obtida na última transformação em um espaço de crominancia <strong>RGB</strong> em <strong>YUV</strong>, a fim de realizar a binarização, destacando as regiãos de verde: essa região expressa um conjunto de pontos onde <strong>u < 0 e u * y < -c</strong>, em que <strong>c</strong> é um limiar escolhido por inspeção. Na Visualização, a seguir, as regiões são apresentadas para valores distintos de desse parâmetro, variande de 50 a 5. O valor de <strong>c = 22</strong> foi escolhido por inspeção, or se ajustar bem a todo conjunto de imagens estudado. Alem disso, impuzemos um limiar de luminancia <strong>y < 180</strong>, que impede que regiões brancas sejam identificadas como verde; esse tambem escolhido por inspeção.</li>
+			<li><strong>Median Blur</strong> foi uma última etapa adicionada com o intuito de eliminar ruídos ou regiões classificadas como verde, mas que fossem pouco representativas (pequenas).
+		</ol>
+		<p>
+		Importante destacar que o conjunto de parâmetros a essa altura foram determinador por inpeção para váris casos: rodamos scripts de teste para conjustos de parâmetros e definimos uma combinação razoável. De fato, as regiões desejadas estão bem definidas na máscara.
+		</p>
+		
+		<h2>4. Resultados e Visualização</h2>
+		<p>
+		Após o processamento da imagem original, temos um conjunto de figuras que representam os estados para cada figura original, até a obtenção da máscara: <strong>Blur; Expansão; Decorelação; Destacamento para vários limiares (c variando de 50 a 5); Binarização (máscara)</strong>. Tais figuras podem ser vistas abaixo, para cada cidade, bastante selecionar o botão referente a cidade desejada. A esquerda, deixamos fixada a imagem original, e a direita um painel para deslocar entre tais estados. Utilizamos código <strong>JavaScript</strong> imerso na página.
+		</p>
+		
+		
+		<!-- os links para atualização das imagens -->	
+		<center>
+		<button onclick="loadImage('MG araxa');">Araxá</button>
+		<button onclick="loadImage('MG capetinga');">Capetinga</button>
+		<button onclick="loadImage('MG mirai');">Miraí</button>
+		<button onclick="loadImage('MG passos');">Passos</button>
+		<button onclick="loadImage('MG tres_coracoes');">Tres Corações</button>
+		<button onclick="loadImage('PB joao_pessoa');">João Pessoa</button>
+		<button onclick="loadImage('PR roncador');">Roncador</button>
+		<button onclick="loadImage('RN diogo_lopes');">Diogo Lopes</button>
+		<button onclick="loadImage('RN natal');">Natal</button>
+		<button onclick="loadImage('RS caxias_do_sul');">Caxias do Sul</button>
+		<button onclick="loadImage('SP cerquilho');">Cerquilho</button>
+		<button onclick="loadImage('SP santa_rita_do_passaquatro');">Santa Rita</button>
+		<button onclick="loadImage('SP sao_carlos');">Sao Carlos</button>
+		</center>
+		<!-- painel onde as imagens serão-->
+		<center>
+			<img id = "img_old" width = "500" height = "300" style="margin-left: -50px"></canvas>
+			<img id = "img_new" width = "500" height = "300"></canvas>
+			<img onclick = "move_fwd();" width = "50" height="50" src = "seta_fwd.png" style="margin-left: -55px">
+			<img onclick = "move_bck();" width = "50" height="50" src = "seta_bck.png" style="margin-left: -100px">
+		</center>
+		<script type="text/javascript" src = "loadimage.js"></script>
+		<script type="text/javascript" src = "improcessing.js"></script>
+		<p>
+		Claramente temos resultados rasoáveis nos casos observados, a excessão de alguns pontos: em geral, regiões de alta luminancia, como telhados brancos, reflexos, ou áreas alagadas. Destaco ainda que as imagens utilizadas apresentam regiões verdes muito bem destacadas, escolhidas por sugestão de colegas de trabalho.
+		</p>
+		<h2>5. Propostas e Considerações</h2>
+		<p>
+		O método de mostrou preciso o bastante na identificação de regiões de mata significativas, mas com razoável custo computacional, em especial no processo de escolha por inspeção de alguns parametros utilizados. Uma roposta rasoável é a utlização de mecanismos de machine learning (deep learning e/ou redes neurais) para definir a parametrização na obtenção de máscaras ótimas.
+		</p>
+		<p>
+		Além disso, o custo computacional envolvido em avaliar a família de pixels da imagem impossibilita o uso desse método em imagens de maiores dimensões, visto que o tempo de execussão se elevaria consideravelmente. Seria possível utilizar de métodos estatísticos na escolha de amostras de pixels representado um conjunto (retangulo ou quadrado) maior, isto é, discretizar a imagem em partições retangulares representadas por uma única unidade: isso substituiria o processo de suavização gaussiana por algo equivalente a suavização mediana.
+		</p>
+		<p>
+		Portanto, os desafios atuais envolvem a otmização dos algoritmos apresentados para diminuição de custos computacionais, e a eliminação da etapa visual na escolha de parâmetros para utilização do método em maiores escalas: por exemplo, a detecção de áreas verdes e conctruídas em imagems aéreas e de satélites em regiões urbanas para utilização em modelos de dispersão de animais, ou genes, numa população: proposta desse tipo está sendo desenvolvida no estudo de dispersão da bactéria wolbacia na população de mosquitos Aédes Aegipty, pela Fiocruz.
+		</p>
+		<h2>6. Referencias</h2>
+		<p>ALLEY, Ronald.<strong> Algorithm Theoretical Basis Document for Decorrelation Stretch</strong>.</p>
+		<p>ALMEIDA, Dyego de Oliveira.<strong> Métodos de Visão Computacional Aplicados a Extração de Características de Ambientes Urbanos em Imagen de Satélite de Baixa Resolução</strong>.</p>
+		<p>ANTONELLO, Ricardo.<strong> Introdução a Visão Computacional com Python e OpenCV: PARTE 1 de 2</strong>.</p>
+		<p>ARAUJO, Carlos Guilherme Varela; RIBEIRO, José António Pacheco.<strong> Conversão e Manipulação em Espaços de Côr</strong>.</p>
+		<p>BRABEK, Lukáš. <strong>Decorrelation stretch in Python.</strong>Disponível em: https://github.com/lbrabec/decorrstretch. Acesso em 17 de setembro de 2019.</p>
+		<p>FEITOSA, Raul; COSTA, Gilson; HAPP, Patrick.<strong> Multispectral Image Transformations</strong>.<br/>
+		<p>MATLAB.<strong> Decorrelation Stretching</strong>. Disponívl em: http://matlab.izmiran.ru/help/toolbox/images/enhanc20.html. Acesso em 17 de setembro de 2019.</p>
+		<p>OLIVEIRA, Bruno Filipe Sobral de; MAGALHÂES, Filipe Tiago Alves de.<strong> Filtragem de imagens fixas: usando Matlab</strong>.</p>
+		<p>OLIVEIRA, Luciano Lucas de.<strong> Filtros Compostos e Adaptativos: o filtro Gaussiano, Laplaciano e de Gabor (hamonico-gaussiano).</strong></p>
+	</body>
+</html>

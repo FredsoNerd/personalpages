@@ -1,0 +1,45 @@
+#all{
+  width: 1000px;
+  height: 600px;
+
+  padding: 20px;
+  background-color: #dddddd;
+  border-radius: 20px;
+
+  background-image: url("img/5.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+}
+#panel{
+  width: 1000px;
+  height: 60px;
+  background-color: #ffffffaa;
+
+  margin-top: 75px;
+  padding: 100px 0px;
+}
+#control{
+  width: 700px;
+  height: 150px;
+  float: left;
+  background-color: #ffffffaa;
+  margin: 50px 150px;
+}
+.res{
+  background-color: gray;
+  float: left;
+  color: black;
+  font-size: 30px;
+  width: 200px;
+  height: 30px;
+  border-radius: 30px 30px 10px;
+  margin: 50px 16px;
+  padding: 10px 0px;
+  box-shadow: 10px 10px 10px black;
+}
+
+footer{
+  padding: 50px 0px;
+}

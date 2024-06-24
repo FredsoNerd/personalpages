@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body>
+  <h1>Brincando com o Zé Palito</h1>
+  <p>Modelamos um simples boneco de palitos para servir de objeto na visualização
+  das tranformações lineares mais fundamentais que poderiam ser feitas. Assim, são
+  disponibilizadas 4 transformações: rotação em torno de um ponto de
+  origem, cizalhamento (skew), reescalação do objeto e translação. Essas tranformações
+  são feitas sequecialmente quando aplicadas. Mais abaixo, há a possibilidade de
+  desfazer as transformações aplicadas.
+  </p>
+  <p>
+    Como dito, definimos as tranformações em relação a um ponto de origem no espaço.
+    Esse ponto será marcado em vermelho, e pode ser recolocado bastando clicar sobre
+    o painel. Além disso, desejamos destacar o sequeciamento das transformações;
+    cada aplicação padrão é feita sobre a transformação anterior com relação
+    ao eixo global: tente, por exemplo, rotacionar o Zé, e, logo apoś, aplicar uma
+    translação; verá que a translação ocorre sobre os eixos do painel, e não do novo.
+  </p>
+  <p>
+    Chamamos o nosso boneco modelo de Zé Palito. Seja simpático quando brincar com ele.
+  </p>
+
+  <center>
+  <div style="width:80%">
+  <svg id="svg"xmlns="http://www.w3.org/2000/svg" width = "1000" height="400" viewbox="-50 -100 200 400" onclick="alter_origin(event)">
+
+    <g id="boneco" stroke-width=5 stroke="black" fill="none" transform="">
+      <!--cabeça-->
+      <rect x="0" y="0" width="100" height="225" stroke="#dddddd" />
+      <circle cx="50" cy="50" r="40"/>
+      <path d="M 0 20 L 50 0 L 100 20 L 25 10" fill="black" />
+
+      <circle cx="50" cy="70" r="5"/>
+      <circle cx="60" cy="40" r="2"/>
+      <circle cx="40" cy="40" r="2"/>
+
+      <!--corpinho-->
+      <path d="M 50 90 L 50 200 L 100 225 M 50 200 L 0 225 M 50 100 L 100 125 M 50 100 L 0 125"/>
+      <circle cx="50" cy="150" r="20" fill="black"/>
+    </g>
+    <circle id="origin_r" fill="red" cx="0" cy="0" r="4" stroke='none'>
+
+  </svg>
+<div id="controle">
+  <!-- rotacao -->
+  <div class="panel">
+    <strong>Rotação:</strong><br/>
+    <button onclick="rotate(10)" onmousedown="begin('rotate(10')" onmouseup="end()" onmouseout="end()">rotate +10</button>
+    <button onclick="rotate(-10)" onmousedown="begin('rotate(-10')" onmouseup="end()" onmouseout="end()">rotate -10</button>
+  <div>
+  <br/>
+
+  <!-- skew -->
+  <div class="panel">
+    <strong>Skew:</strong><br/>
+    <button onclick="transform('skewX(10)')" onmousedown="begin('skewX(10)')" onmouseup="end()" onmouseout="end()">skew X +10</button>
+    <button onclick="transform('skewX(-10)')" onmousedown="begin('skewX(-10)')" onmouseup="end()" onmouseout="end()">skew X -10</button>
+    <br/><br/>
+    <button onclick="transform('skewY(10)')" onmousedown="begin('skewY(10)')" onmouseup="end()" onmouseout="end()">skew Y +10</button>
+    <button onclick="transform('skewY(-10)')" onmousedown="begin('skewY(-10)')" onmouseup="end()" onmouseout="end()">skew Y -10</button>
+  </div>
+  <br/>
+
+  <!--escala -->
+  <div class="panel">
+    <strong>Escala:</strong><br/>
+    <button onclick="transform('scale(2 1)')" onmousedown="begin('scale(2 1)')" onmouseup="end()" onmouseout="end()">scaleX 2x</button>
+    <button onclick="transform('scale(0.5 1)')" onmousedown="begin('scale(0.5 1)')" onmouseup="end()" onmouseout="end()">scaleX 0.5x</button>
+    <br/><br/>
+    <button onclick="transform('scale(1 2)')" onmousedown="begin('scale(1 2)')" onmouseup="end()" onmouseout="end()">scaleY 2x</button>
+    <button onclick="transform('scale(1 0.5)')" onmousedown="begin('scale(1 0.5)')" onmouseup="end()" onmouseout="end()">scaleY 0.5x</button>
+  </div>
+  <br/>
+
+  <!--translacao -->
+  <div class="panel">
+    <strong>Translacao:</strong><br/>
+    <button onclick="transform('translate(10 0)')" onmousedown="begin('translate(10 0)')" onmouseup="end()" onmouseout="end()">translateX +10</button>
+    <button onclick="transform('translate(-10 0)')" onmousedown="begin('translate(-10 0)')" onmouseup="end()" onmouseout="end()">translateX -10</button>
+    <br/><br/>
+    <button onclick="transform('translate(0 10)')" onmousedown="begin('translate(0 10)')" onmouseup="end()" onmouseout="end()">translateY +10</button>
+    <button onclick="transform('translate(0 -10)')" onmousedown="begin('translate(0 -10)')" onmouseup="end()" onmouseout="end()">translateY -10</button>
+  </div>
+  <br/>
+  <br/>
+
+  <!--limpamos as alteracoes -->
+  <div class="panel">
+    <strong>Limpar Alterações: </strong>
+    <button onclick="clean()">clean all</button>
+  </div>
+</div>
+</center>
+
+<footer>
+  <center>
+    copyright ©fredsonerd@2019
+  </center>
+</footer>
+
+<script type="text/javascript" src = "fun.js"></script>
+</body>
+<html>

@@ -1,0 +1,30 @@
+#panel{
+  width: 1000px;
+  height: 500px;
+  padding: 20px 100px;
+  background-color: #f9f9f9;
+  margin: 40px 0px;
+}
+#charts{
+  width: 500px;
+  height: 400px;
+  float: left;
+}
+.chart{
+    width: 500px;
+    height: 25  0px;
+}
+svg{
+  width: 500px;
+  height: 500px;
+  float: left;
+  /**background-color: gray;**/
+}
+svg path{
+  /**fill: #cccccc;**/
+  stroke: white;
+  stroke-width: 1px;
+}
+.country:hover{
+  opacity: 0.7;
+}

@@ -1,0 +1,24 @@
+#all{
+  width: 1000px;
+  height: 400px;
+
+  padding: 20px;
+  background-color: #dddddd;
+  border-radius: 20px;
+}
+#panel{
+  width: 800px;
+  height: 400px;
+}
+#control{
+  width: 200px;
+  height: 400px;
+  float: left;
+  background-color: #5555ff33;
+}
+.input{
+  width: 170px;
+}
+footer{
+  padding: 50px 0px;
+}
